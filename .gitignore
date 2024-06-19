@@ -30,3 +30,7 @@ dist-ssr
 .github/workflows/
 
 firebase.json
+
+public/index.html
+
+src/constants.js

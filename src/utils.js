@@ -1,10 +1,13 @@
 export function displayDialogue(text, onDisplayEnd) {
   const dialogueUI = document.getElementById("textbox-container");
   const dialogue = document.getElementById("dialogue");
+  const closeBtn = document.getElementById("close");
 
   dialogueUI.style.display = "block";
+
   let index = 0;
   let currentText = "";
+
   const intervalRef = setInterval(() => {
     if (index < text.length) {
       currentText += text[index];
@@ -12,11 +15,8 @@ export function displayDialogue(text, onDisplayEnd) {
       index++;
       return;
     }
-
     clearInterval(intervalRef);
   }, 4);
-
-  const closeBtn = document.getElementById("close");
 
   function onCloseBtnClick() {
     onDisplayEnd();
@@ -24,17 +24,17 @@ export function displayDialogue(text, onDisplayEnd) {
     dialogue.innerHTML = "";
     clearInterval(intervalRef);
     closeBtn.removeEventListener("click", onCloseBtnClick);
+    document.removeEventListener("keydown", handleKeydown);
+  }
+
+  function handleKeydown(event) {
+    if (event.code === "Enter" || event.code === "Escape") {
+      onCloseBtnClick();
+    }
   }
 
   closeBtn.addEventListener("click", onCloseBtnClick);
-
-  addEventListener("keypress", (key) => {
-    if (key.code === "Enter") {
-      closeBtn.click();
-    } else if (key.code === 27) {
-      closeBtn.click();
-    }
-  });
+  document.addEventListener("keydown", handleKeydown);
 }
 
 export function setCamScale(k) {
